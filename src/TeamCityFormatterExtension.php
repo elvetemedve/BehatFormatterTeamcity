@@ -47,7 +47,10 @@ class TeamCityFormatterExtension implements Extension
      */
     public function load(ContainerBuilder $container, array $config)
     {
-        $definition = new Definition("Behat\\TeamCityFormatter\\TeamCityFormatter");
+        $outputDefinition = new Definition('Symfony\\Component\\Console\\Output\\ConsoleOutput');
+        $outputPrinterDefinition = new Definition('Behat\\TeamCityFormatter\\ConsoleOutput', array($outputDefinition));
+
+        $definition = new Definition("Behat\\TeamCityFormatter\\TeamCityFormatter", array($outputPrinterDefinition));
         $definition->addTag(OutputExtension::FORMATTER_TAG, array('priority' => 90));
 
         $container->setDefinition(OutputExtension::FORMATTER_TAG . '.teamcity', $definition);
